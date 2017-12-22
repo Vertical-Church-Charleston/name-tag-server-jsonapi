@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Tag = require('../models/tag');
 
+import PDFDocument from 'pdfkit';
+
 const JSONAPISerializer = require('jsonapi-serializer').Serializer;
 const TagSerializer = new JSONAPISerializer('tags', {
   attributes: ['firstName', 'lastName', 'template'],
@@ -66,4 +68,23 @@ export const updateTag = (req,res)=>{
       });
     }
   })
+}
+
+export const printTags = (req,res)=>{
+  const doc = new PDFDocument
+  res.setHeader('Content-type', 'application/pdf');
+  doc.pipe(res);
+  doc.save()
+    .moveTo(100, 150)
+    .lineTo(100, 250)
+    .lineTo(200, 250)
+    .fill("#FF3300")
+  doc.scale(0.6)
+    .translate(470, -380)
+    .path('M 250,75 L 323,301 131,161 369,161 177,301 z')
+    .fill('red', 'even-odd')
+    .restore()
+  doc.end()
+  // console.log(req)
+  // res.sendStatus(200)
 }
