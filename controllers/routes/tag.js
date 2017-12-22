@@ -11,7 +11,7 @@ const TagDeserializer = new JSONAPIDeserializer({
   keyForAttribute: 'camelCase'
 });
 
-function getTags(req,res) {
+export const getTags = (req,res)=>{
   const query = Tag.find({});
   query.exec((err,tags) => {
     if(err) res.send(err);
@@ -20,7 +20,7 @@ function getTags(req,res) {
   });
 }
 
-function postTag(req,res) {
+export const postTag = (req,res)=>{
   TagDeserializer.deserialize(req.body,(err,tag)=>{
     if(err){
       res.send(err);
@@ -37,7 +37,7 @@ function postTag(req,res) {
   });
 }
 
-function getTag(req,res) {
+export const getTag = (req,res)=>{
   Tag.findById(req.params.id, (err, tag) => {
     if(err) res.send(err);
 
@@ -45,13 +45,13 @@ function getTag(req,res) {
   });
 }
 
-function deleteTag(req,res) {
+export const deleteTag = (req,res)=>{
   Tag.remove({_id: req.params.id}, (err, result) => {
     res.json(TagSerializer.serialize(result));
   });
 }
 
-function updateTag(req,res) {
+export const updateTag = (req,res)=>{
   TagDeserializer.deserialize(req.body,(err,deserializedTag)=>{
     if(err){
       res.send(err);
@@ -67,5 +67,3 @@ function updateTag(req,res) {
     }
   })
 }
-
-module.exports = {getTags, postTag, getTag, deleteTag, updateTag};
