@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "dev": "export NODE_ENV=dev && nodemon server.js",
+    "dev": "export NODE_ENV=dev && nodemon server.js --exec babel-node",
     "db": "mongod --dbpath data/db/",
     "test": "mocha --timeout 10000"
   },
@@ -23,6 +23,9 @@
     "morgan": "^1.9.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
     "mocha": "^4.0.1",
