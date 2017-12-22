@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const port = 8080;
-import { getTag, getTags, postTag, updateTag, deleteTag } from "./controllers/routes/tag";
+import { getTag, getTags, postTag, updateTag, deleteTag, printTags } from "./controllers/routes/tag";
 const config = require('config');
 const cors = require('cors');
 
@@ -54,6 +54,8 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({type: 'application/json'}));
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }))
 
+app.route('/printtags')
+  .get(printTags)
 app.route('/tags')
   .get(getTags)
   .post(postTag);
