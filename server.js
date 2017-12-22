@@ -1,0 +1,71 @@
+const express = require('express');
+const app = express();
+const mongoose = require('mongoose');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const port = 8080;
+const tag = require('./controllers/routes/tag');
+const config = require('config');
+const cors = require('cors');
+
+const serverPort = 8080;
+//db options
+const options = {
+  server: {
+    socketOptions: {
+      keepAlive: 1,
+      connectionTimeoutMS: 30000
+    }
+  },
+  replset: {
+    socketOptions: {
+      keepAlive: 1,
+      connectionTimeoutMS: 30000
+    }
+  }
+};
+
+// db connection
+mongoose.connect(config.DBHost, options);
+const db = mongoose.connection;
+db.on('error',console.error.bind(console, 'connection error:'));
+
+// don't show the long when in test
+if(config.util.getEnv('NODE_ENV') !== 'test'){
+  // user morgan to log at the command line
+  app.use(morgan('dev'));
+}
+
+// Access Control
+app.use(cors({
+  origin: 'http://localhost:4200',
+  allowedHeaders: ['Origin','X-Requested-With','Content-Type','Accept']
+}));
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:4200");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
+
+// parse application/json and look for raw text
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.text());
+app.use(bodyParser.json({type: 'application/json'}));
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }))
+
+app.route('/tags')
+  .get(tag.getTags)
+  .post(tag.postTag);
+app.route('/tags/:id')
+  .get(tag.getTag)
+  .delete(tag.deleteTag)
+  .patch(tag.updateTag);
+
+app.listen({
+  port: serverPort,
+  path: 'api/v1'
+})
+console.log(`Listening on port ${serverPort}`);
+
+module.exports = app;
