@@ -45,9 +45,9 @@ export const getTag = (req,res)=>{
   });
 }
 
-export const deleteTag = (req,res)=>{
+export const deleteTag = (req,res,next)=>{
   Tag.remove({_id: req.params.id}, (err, result) => {
-    res.json(TagSerializer.serialize(result));
+    res.sendStatus(204);
   });
 }
 
