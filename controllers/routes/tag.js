@@ -70,6 +70,10 @@ export const updateTag = (req,res)=>{
   })
 }
 
+export const makePage = (req,res)=>{
+  res.render('printtags', { tags: [{"firstName":"Jordan","lastName":"Riser","template":1}, {"firstName":"Abby","lastName":"Worden","template":1}, {"firstName":"Alex","lastName":"Williams","template":1}, {"firstName":"Nathan","lastName":"Worden","template":1},{"firstName":"Jordan","lastName":"Riser","template":1}, {"firstName":"Abby","lastName":"Worden","template":1}, {"firstName":"Alex","lastName":"Williams","template":1}, {"firstName":"Nathan","lastName":"Worden","template":1},{"firstName":"Jordan","lastName":"Riser","template":1}, {"firstName":"Abby","lastName":"Worden","template":1}, {"firstName":"Alex","lastName":"Williams","template":1}, {"firstName":"Nathan","lastName":"Worden","template":1},{"firstName":"Jordan","lastName":"Riser","template":1}, {"firstName":"Abby","lastName":"Worden","template":1}, {"firstName":"Alex","lastName":"Williams","template":1}, {"firstName":"Nathan","lastName":"Worden","template":1}] })
+}
+
 export const printTags = (req,res)=>{
   const doc = new PDFDocument
   res.setHeader('Content-type', 'application/pdf');
