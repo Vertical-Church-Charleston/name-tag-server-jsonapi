@@ -31,7 +31,6 @@ mongoose.connect(config.DBHost, options);
 const db = mongoose.connection;
 db.on('error',console.error.bind(console, 'connection error:'));
 
-app.set('view engine', 'hbs');
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 // don't show the long when in test
