@@ -9,6 +9,8 @@ import { getTag, getTags, postTag, updateTag, deleteTag, printTags, makePage } f
 const config = require('config');
 const cors = require('cors');
 
+global.__basedir = __dirname;
+
 const serverPort = 8080;
 //db options
 const options = {
