@@ -105,19 +105,17 @@
       color: white;
       -webkit-print-color-adjust: exact;
     }
-    main {
-      
-    }
     .tag-component {
-      background-repeat: no-repeat;
       position: relative;
       overflow: hidden;
       position: relative;
-      width: 3in;
-      height: 4in;
-      margin-top: 1in;
-      margin-left: 0.83333333in;
+      width: 216px;
+      margin-top: 72px;
+      margin-left: 59.9999998px;
       float: left;
+    }
+    .tag-component img {
+      width: 100%;
     }
     .tag-component:nth-of-type(5n) {
       page-break-before: always;
@@ -154,14 +152,14 @@
           <span class="first-name">{{tag.firstName}}</span>
           <span class="last-name">{{tag.lastName}}</span>
         </div>
-        <img src="assets/images/name-tag-{{tag.template}}.svg">
+        <img src="http://localhost:8080/assets/images/name-tag-{{tag.template}}.png">
       </div>
       <div class="tag-component template-{{tag.template}}">
         <div class="name">
           <span class="first-name">{{tag.firstName}}</span>
           <span class="last-name">{{tag.lastName}}</span>
         </div>
-        <img src="assets/images/name-tag-{{tag.template}}.svg">
+        <img src="http://localhost:8080/assets/images/name-tag-{{tag.template}}.png">
       </div>
     {{/each}}
   </main>  
