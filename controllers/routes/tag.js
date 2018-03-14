@@ -1,5 +1,11 @@
 const mongoose = require('mongoose');
 const Tag = require('../models/tag');
+const Handlebars = require('handlebars');
+const fs = require('fs');
+const conversion = require("phantom-html-to-pdf")({
+  phantomPath: require("phantomjs-prebuilt").path
+});
+const fileUrl = require('file-url');
 
 import PDFDocument from 'pdfkit';
 
@@ -70,25 +76,33 @@ export const updateTag = (req,res)=>{
   })
 }
 
-export const makePage = (req,res)=>{
-  res.render('printtags', { tags: [{"firstName":"Jordan","lastName":"Riser","template":1}, {"firstName":"Abby","lastName":"Worden","template":1}, {"firstName":"Alex","lastName":"Williams","template":1}, {"firstName":"Nathan","lastName":"Worden","template":1},{"firstName":"Jordan","lastName":"Riser","template":1}, {"firstName":"Abby","lastName":"Worden","template":1}, {"firstName":"Alex","lastName":"Williams","template":1}, {"firstName":"Nathan","lastName":"Worden","template":1},{"firstName":"Jordan","lastName":"Riser","template":1}, {"firstName":"Abby","lastName":"Worden","template":1}, {"firstName":"Alex","lastName":"Williams","template":1}, {"firstName":"Nathan","lastName":"Worden","template":1},{"firstName":"Jordan","lastName":"Riser","template":1}, {"firstName":"Abby","lastName":"Worden","template":1}, {"firstName":"Alex","lastName":"Williams","template":1}, {"firstName":"Nathan","lastName":"Worden","template":1}] })
-}
-
 export const printTags = (req,res)=>{
-  const doc = new PDFDocument
-  res.setHeader('Content-type', 'application/pdf');
-  doc.pipe(res);
-  doc.save()
-    .moveTo(100, 150)
-    .lineTo(100, 250)
-    .lineTo(200, 250)
-    .fill("#FF3300")
-  doc.scale(0.6)
-    .translate(470, -380)
-    .path('M 250,75 L 323,301 131,161 369,161 177,301 z')
-    .fill('red', 'even-odd')
-    .restore()
-  doc.end()
-  // console.log(req)
-  // res.sendStatus(200)
+  const ids = req.query.ids;
+  const query = Tag.find({
+    _id: {
+      $in: ids
+    }
+  });
+  query.exec((err,tags) => {
+    res.setHeader('Content-type', 'application/pdf');
+    if(err) res.send(err);
+    fs.readFile(`views/printtags.hbs`, (err, resp)=>{
+      if(err){
+        throw err;
+      }
+      const source = resp.toString();
+      const template = Handlebars.compile(source);
+      const result = template({tags: tags});
+      conversion({ html: result, paperSize: {
+        format: 'Letter',
+        widt: '8.5in',
+        height: '11in',
+        orientation: 'portrait',
+        margin: '0in'
+      }}, function(err, pdf) {
+        if(err) res.send(err);
+        pdf.stream.pipe(res);
+      });
+    });
+  });
 }
