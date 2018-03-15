@@ -75,7 +75,16 @@ export const postTags = (req,res)=>{
             res.send(err);
             return;
           }else{
-            res.json(serializedTags);
+            res.json({
+              data: {
+                id: "1",
+                type: 'taglist',
+                attributes: {},
+                relationships: {
+                  'model-list': serializedTags
+                }
+              }
+            });
           }
         });
       }
