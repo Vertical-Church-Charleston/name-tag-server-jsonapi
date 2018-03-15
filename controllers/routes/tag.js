@@ -65,8 +65,19 @@ export const postTags = (req,res)=>{
         res.send(err);
         return;
       } else {
-        console.log(tags);
-        res.json(TagSerializer.serialize(tags));
+        let serializedTags = TagSerializer.serialize(tags);
+        each(serializedTags.data, ({attributes}, callback) => {
+          attributes.__id__ = attributes.Id;
+          delete attributes.Id;
+          callback();
+        }, (err) => {
+          if(err){
+            res.send(err);
+            return;
+          }else{
+            res.json(serializedTags);
+          }
+        });
       }
   });
 }
