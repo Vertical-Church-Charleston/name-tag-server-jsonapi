@@ -7,11 +7,17 @@ const conversion = require("phantom-html-to-pdf")({
 });
 const fileUrl = require('file-url');
 
-import PDFDocument from 'pdfkit';
+import each from 'async/each';
 
 const JSONAPISerializer = require('jsonapi-serializer').Serializer;
 const TagSerializer = new JSONAPISerializer('tags', {
-  attributes: ['firstName', 'lastName', 'template'],
+  attributes: ['firstName', 'lastName', 'template',{
+    id: '__id__',
+    keyForAttribute: (attr) => {
+      return '__id__';
+    },
+    nullIfMissing: true
+  }],
   keyForAttribute: 'camelCase',
 });
 const JSONAPIDeserializer = require('jsonapi-serializer').Deserializer;
@@ -42,6 +48,32 @@ export const postTag = (req,res)=>{
         }
       });
     }
+  });
+}
+
+export const postTags = (req,res)=>{
+  let tags = [];
+  each(req.body.data.relationships['model-list'].data, ({attributes}, callback) => {
+    let newTag = new Tag(attributes);
+      newTag.save((err,tag) => {
+        if(err){
+          res.send(err);
+          return;
+        } else {
+          tag.__id__ = attributes.__id__
+          tags.push(tag);
+          callback();
+        }
+      });
+  }, (err) => {
+      // if any of the file processing produced an error, err would equal that error
+      if( err ) {
+        res.send(err);
+        return;
+      } else {
+        console.log(tags);
+        res.json(TagSerializer.serialize(tags));
+      }
   });
 }
 

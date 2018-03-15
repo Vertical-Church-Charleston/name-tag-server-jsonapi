@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const port = 8080;
-import { getTag, getTags, postTag, updateTag, deleteTag, printTags } from "./controllers/routes/tag";
+import { getTag, getTags, postTag, postTags, updateTag, deleteTag, printTags } from "./controllers/routes/tag";
 const config = require('config');
 const cors = require('cors');
 
@@ -68,6 +68,8 @@ app.route('/tags/:id')
   .get(getTag)
   .delete(deleteTag)
   .patch(updateTag);
+app.route('/taglist')
+  .post(postTags);
 
 app.listen({
   port: serverPort,
