@@ -11,13 +11,7 @@ import each from 'async/each';
 
 const JSONAPISerializer = require('jsonapi-serializer').Serializer;
 const TagSerializer = new JSONAPISerializer('tags', {
-  attributes: ['firstName', 'lastName', 'template',{
-    id: '__id__',
-    keyForAttribute: (attr) => {
-      return '__id__';
-    },
-    nullIfMissing: true
-  }],
+  attributes: ['firstName', 'lastName', 'template','__id__'],
   keyForAttribute: 'camelCase',
 });
 const JSONAPIDeserializer = require('jsonapi-serializer').Deserializer;
