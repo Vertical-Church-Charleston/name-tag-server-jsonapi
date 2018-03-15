@@ -49,16 +49,16 @@ export const postTags = (req,res)=>{
   let tags = [];
   each(req.body.data.relationships['model-list'].data, ({attributes}, callback) => {
     let newTag = new Tag(attributes);
-      newTag.save((err,tag) => {
-        if(err){
-          res.send(err);
-          return;
-        } else {
-          tag.__id__ = attributes.__id__
-          tags.push(tag);
-          callback();
-        }
-      });
+    newTag.save((err,tag) => {
+      if(err){
+        res.send(err);
+        return;
+      } else {
+        tag.__id__ = attributes.__id__
+        tags.push(tag);
+        callback();
+      }
+    });
   }, (err) => {
       // if any of the file processing produced an error, err would equal that error
       if( err ) {
