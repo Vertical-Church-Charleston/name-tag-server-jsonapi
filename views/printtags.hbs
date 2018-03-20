@@ -139,43 +139,32 @@
       line-height: 1.2em;
       display: block;
     }
-      font-family: "Gibson",sans-serif;
-      font-family: "Gibson",sans-serif;
-    .tag-component.template-1 .name .first-name, .tag-component.template-1 .name .last-name {
-      text-transform: capitalize;
-      font-size: 36.88px;
-      color: white !important;
-    }
-    .tag-component.template-2 .name {
+    .tag-component .name {
       height: 40%;
     }
-    .tag-component.template-2 .name .first-name, .tag-component.template-2 .name .last-name {
+    .tag-component .name .first-name, .tag-component .name .last-name {
       font-size: 35px;
       text-transform: capitalize;
-    }
-    @media print {
-      .tag-component.template-2 .name .first-name, .tag-component.template-2 .name .last-name {
-        color: #0C90BC;
-      }
+      color: #0C90BC;
     }
   </style>
 </head>
 <body>
   <main>
     {{#each tags as |tag|}}
-      <div class="tag-component template-{{tag.template}}">
+      <div class="tag-component">
         <div class="name">
           <span class="first-name">{{tag.firstName}}</span>
           <span class="last-name">{{tag.lastName}}</span>
         </div>
-        <img src="https://s3.amazonaws.com/name-tag-studio-server/assets/images/name-tag-{{tag.template}}.png">
+        <img src="https://s3.amazonaws.com/name-tag-studio-server/assets/images/name-tag.png">
       </div>
-      <div class="tag-component template-{{tag.template}}">
+      <div class="tag-component">
         <div class="name">
           <span class="first-name">{{tag.firstName}}</span>
           <span class="last-name">{{tag.lastName}}</span>
         </div>
-        <img src="https://s3.amazonaws.com/name-tag-studio-server/assets/images/name-tag-{{tag.template}}.png">
+        <img src="https://s3.amazonaws.com/name-tag-studio-server/assets/images/name-tag.png">
       </div>
     {{/each}}
   </main>  
